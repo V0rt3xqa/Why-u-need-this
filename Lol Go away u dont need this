@@ -50,7 +50,7 @@ end)
 })
 
 COB("Blatant", {
-    Name = "Leaked moon fly",
+    Name = "MoonInf better fly",
 	HoverText = "redid",
     Function = function(v)
         longjumpval = v
@@ -114,33 +114,108 @@ COB("Blatant", {
     end
 })
 
-COB("Blatant", {
-    Name = "AnticheatBFly",
-	HoverText = "Custom Flight",
-    Function = function(v)
-        longjumpval = v
-        if longjumpval then
-			workspace.Gravity = 0
-            spawn(function()
-                repeat
-                    if (not longjumpval) then return end
-                  game:GetService"Players".LocalPlayer.Character:FindFirstChildOfClass'Humanoid':ChangeState("Freefall")
-					wait(0.000000000000001)
-                   game:GetService"Players".LocalPlayer.Character:FindFirstChildOfClass'Humanoid':ChangeState("Running")
-					wait(0.000000000000001)
-                  game:GetService"Players".LocalPlayer.Character:FindFirstChildOfClass'Humanoid':ChangeState("Climbing")
-					wait(0.000000000000001)
-                   game:GetService"Players".LocalPlayer.Character:FindFirstChildOfClass'Humanoid':ChangeState("Swimming")
-					wait(0.000000000000001)
-					game:GetService"Players".LocalPlayer.Character:FindFirstChildOfClass'Humanoid':ChangeState("Landed")
-					wait(0.000000000000001)
-                until (not longjumpval)
-            end)
+local AnticheatDisabler = COB("Render", {
+    Name = "NickHider",
+    Function = function(callback) 
+        if callback then
+         while game:IsLoaded() == false do wait() end
+local fakeplr = {["Name"] = "ROBLOX", ["UserId"] = "1"}
+local otherfakeplayers = {["Name"] = "ROBLOX", ["UserId"] = "1"}
+local lplr = game:GetService("Players").LocalPlayer
+
+local AnticheatDisabler = COB("Render", {
+    Name = "NickHider",
+    Function = function(callback) 
+        if callback then
+         while game:IsLoaded() == false do wait() end
+local fakeplr = {["Name"] = "ROBLOX", ["UserId"] = "1"}
+local otherfakeplayers = {["Name"] = "ROBLOX", ["UserId"] = "1"}
+local lplr = game:GetService("Players").LocalPlayer
+
+local function plrthing(obj, property)
+    for i,v in pairs(game:GetService("Players"):GetChildren()) do
+        if v ~= lplr then
+            obj[property] = obj[property]:gsub(v.Name, otherfakeplayers["Name"])
+            obj[property] = obj[property]:gsub(v.DisplayName, otherfakeplayers["Name"])
+            obj[property] = obj[property]:gsub(v.UserId, otherfakeplayers["UserId"])
         else
-            workspace.Gravity = 196.19999694824
-            return
+            obj[property] = obj[property]:gsub(v.Name, fakeplr["Name"])
+            obj[property] = obj[property]:gsub(v.DisplayName, fakeplr["Name"])
+            obj[property] = obj[property]:gsub(v.UserId, fakeplr["UserId"])
         end
     end
+end
+
+local function newobj(v)
+    if v:IsA("TextLabel") or v:IsA("TextButton") then
+        plrthing(v, "Text")
+        v:GetPropertyChangedSignal("Text"):connect(function()
+            plrthing(v, "Text")
+        end)
+    end
+    if v:IsA("ImageLabel") then
+        plrthing(v, "Image")
+        v:GetPropertyChangedSignal("Image"):connect(function()
+            plrthing(v, "Image")
+        end)
+    end
+end
+
+for i,v in pairs(game:GetDescendants()) do
+    newobj(v)
+end
+game.DescendantAdded:connect(newobj)
+        end
+    end,
+    Default = false,
+    HoverText = "Old Recreated Feature"
+})
+
+local AnticheatDisabler = COB("World", {
+    Name = "UltraFPSBoost",
+    Function = function(callback) 
+        if callback then
+        local decalsyeeted = true -- Leaving this on makes games look shitty but the fps goes up by at least 20.
+local g = game
+local w = g.Workspace
+local l = g.Lighting
+local t = w.Terrain
+t.WaterWaveSize = 0
+t.WaterWaveSpeed = 0
+t.WaterReflectance = 0
+t.WaterTransparency = 0
+l.GlobalShadows = false
+l.FogEnd = 9e9
+l.Brightness = 0
+settings().Rendering.QualityLevel = "Level01"
+for i, v in pairs(g:GetDescendants()) do
+    if v:IsA("Part") or v:IsA("Union") or v:IsA("CornerWedgePart") or v:IsA("TrussPart") then
+        v.Material = "Plastic"
+        v.Reflectance = 0
+    elseif v:IsA("Decal") or v:IsA("Texture") and decalsyeeted then
+        v.Transparency = 1
+    elseif v:IsA("ParticleEmitter") or v:IsA("Trail") then
+        v.Lifetime = NumberRange.new(0)
+    elseif v:IsA("Explosion") then
+        v.BlastPressure = 1
+        v.BlastRadius = 1
+    elseif v:IsA("Fire") or v:IsA("SpotLight") or v:IsA("Smoke") then
+        v.Enabled = false
+    elseif v:IsA("MeshPart") then
+        v.Material = "Plastic"
+        v.Reflectance = 0
+        v.TextureID = 10385902758728957
+    end
+end
+for i, e in pairs(l:GetChildren()) do
+    if e:IsA("BlurEffect") or e:IsA("SunRaysEffect") or e:IsA("ColorCorrectionEffect") or e:IsA("BloomEffect") or e:IsA("DepthOfFieldEffect") then
+        e.Enabled = false
+    end
+end
+        end
+    end,
+    Default = false,
+    HoverText = "FPS Booster"
 })
 
 local AnticheatDisabler = COB("Utility", {
